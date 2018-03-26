@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    android:id = "@+id/MyLinearLayout"
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent"
+    android:padding = "6dp"
+    android:orientation = "vertical"
+    android:stretchColumns="2,3" >
+    <TableLayout
+        android:id = "@+id/myTablelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding = "6dp"
+        android:orientation = "vertical"
+        android:stretchColumns="2,3"
+        >
+        <TableRow>
+            <TextView android:text = "Name:"/>
+            <EditText
+                android:id="@+id/Name"
+                android:layout_span="3" />
+        </TableRow>
+    </TableLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/Clear"
+            android:layout_height="wrap_content"
+            android:layout_width = "wrap_content"
+            android:text="Clear"
+            android:onClick = "clearClicked"/>
+        <!-- this will be referred to MainActivity.java as method-->
+
+        <Button
+            android:id = "@+id/Print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/Clear"
+            android:onClick = "printClicked"
+            android:text = "Print"
+            />
+        <!-- this will be referred to MainActivity.java as method-->
+
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Clear"
+            android:text = "empty"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
