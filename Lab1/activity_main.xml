@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Change Image"
         android:onClick = "onButton1Clicked"/>
-        <!-- this will be referred to MainActivity.java as method name-->
+    <!-- this will be referred to MainActivity.java as method name-->
 
 
     <!--Make linear layout for first image-->
