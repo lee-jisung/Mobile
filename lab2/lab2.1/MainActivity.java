@@ -20,11 +20,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         Name = findViewById(R.id.editText1);
         Age = findViewById(R.id.editText2);
         button1 = findViewById(R.id.button1);
 
+        /**
+         * get view to reference
+         */
         Button button1 = findViewById(R.id.button1);
+
+        /**
+         *  get name and age from user and store in string variables
+         *  and deliver intent to the new activity
+         */
         button1.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 String name = Name.getText().toString();
