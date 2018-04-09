@@ -20,7 +20,7 @@
         android:hint = "나이"
         android:id="@+id/editText2"
         />
-
+    <!-- button for deliver name and age to new activity-->
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
