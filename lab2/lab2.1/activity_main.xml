@@ -6,19 +6,21 @@
     android:layout_width = "fill_parent"
     android:layout_height="fill_parent"
     >
+    <!-- get name from user-->
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint = "이름"
         android:id="@+id/editText1"
         />
-
+    <!-- get age from user-->
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint = "나이"
         android:id="@+id/editText2"
         />
+
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
@@ -26,5 +28,4 @@
         android:text = "추가"
         android:layout_gravity = "center"
         />
-    </LinearLayout>
-
+</LinearLayout>
