@@ -14,7 +14,12 @@ public class NewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
 
+
         Intent passedIntent = getIntent();
+        /**
+         * if delivered intent is not empty, then get name and age and store in string variables
+         * show toast message on the screen with name and age
+         */
         if(passedIntent != null){
             String loginName = passedIntent.getStringExtra("loginName");
             String loginAge = passedIntent.getStringExtra("loginAge");
@@ -22,6 +27,9 @@ public class NewActivity extends AppCompatActivity {
 
         }
 
+        /**
+         * when close button is clicked, then close screen and return to first screen
+         */
         Button button1 = findViewById(R.id.button1);
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
