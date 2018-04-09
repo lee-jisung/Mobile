@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+xmlns:android = "http://schemas.android.com/apk/res/android"
+android:orientation = "vertical"
+android:layout_width = "fill_parent"
+android:layout_height="fill_parent"
+    >
+    <!-- show URL text that user entered-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        />
+
+        <!--button for go to webpage-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Go"
+            android:id="@+id/goBtn"
+            android:layout_below = "@+id/textView1"
+            android:layout_marginLeft="100dp"/>
+        <!--button for back to previous screen-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Back"
+            android:id="@+id/backBtn"
+            android:layout_below ="@+id/textView1"
+            android:layout_toRightOf="@+id/goBtn"/>
+
+</RelativeLayout>
