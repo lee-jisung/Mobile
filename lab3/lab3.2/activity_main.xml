@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation = "vertical"
+    android:stretchColumns = "2"
+    >
+
+    <TableRow>
+        <TextView android:text = "성명"/>
+        <EditText
+            android:id="@+id/edit"
+            android:layout_span = "3"/>
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text = "성별"/>
+        <RadioGroup
+            android:id = "@+id/radioGroup"
+            android:orientation = "horizontal">
+            <RadioButton
+                android:id="@+id/radMale"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text = "남"/>
+            <RadioButton
+                android:id="@+id/radFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "여"/>
+        </RadioGroup>
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text ="수신여부"/>
+        <CheckBox android:text = "SMS"
+            android:id="@+id/smsBox" />
+        <CheckBox android:text = "e-mail"
+            android:id="@+id/mailBox"/>
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:layout_column = "3"
+            android:id="@+id/button"
+            android:text = "등록"/>
+    </TableRow>
+</TableLayout>
