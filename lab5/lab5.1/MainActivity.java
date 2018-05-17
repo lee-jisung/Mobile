@@ -1,84 +1,100 @@
 package com.leejisung.lab5;
 
-import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textView1;
-    TextView textView2;
+    ImageView imageView1;
+    ImageView imageView2;
     EditText editText;
     Button button;
-    int value;
-    int result = 1;
-    String txt;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // reference view
-        textView1 = findViewById(R.id.textView1);
-        textView2 = findViewById(R.id.textView2);
+        //reference view
+        imageView1 = findViewById(R.id.imageView1);
+        imageView2 = findViewById(R.id.imageView2);
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.button);
-        //when button is clicked, then get a value from edit text
-        // and starts the FactoTask
+
+        //when button clicked, then start thread
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                value = Integer.parseInt(editText.getText().toString());
-                new FactoTask().execute();
+                DogThread thread1 = new DogThread(0);
+                thread1.start();
+                DogThread thread2 = new DogThread(1);
+                thread2.start();
             }
         });
+
     }
 
-    private class FactoTask extends AsyncTask<Void, Integer, Void>{
+    class DogThread extends Thread{
+        int dogIndex;
+        int stateIndex;
 
-        // set text view to default
-        @Override
-        protected void onPreExecute() {
-            txt = "";
-            textView1.setText(txt);
-            textView2.setText("=?");
+        // make array list to store images
+        ArrayList<Integer> images = new ArrayList<>();
+
+        // add images to array list
+        public DogThread(int index){
+            dogIndex = index;
+            images.add(R.drawable.dog_eating);
+            images.add(R.drawable.dog_standing);
+            images.add(R.drawable.dog_studying);
         }
 
-        // pass integer value to onProgressUpdate method every 500 milli seconds
-        @Override
-        protected Void doInBackground(Void... voids) {
-            for(int i = value; i>0; i--) {
-                try {
-                    Thread.sleep(500);
-                    publishProgress(i);
-                } catch (Exception e) {}
+        //when thread is started, check dogIndex value
+        // and if dogIndex is 0, then change dog image of first image view
+        // if dogIndex is 1, then change dog image of second image view
+        // sleep time is random that between 500~3000, so image is changed in random time
+        public void run(){
+            stateIndex = 0;
+            for(int i=0; i<9; i++){
+                final String msg = "dog #" + dogIndex + " state: " + stateIndex;
+                handler.post(new Runnable(){
+                    public void run(){
+                        editText.append(msg + "\n");
+                        if(dogIndex == 0){
+                            imageView1.setImageResource(images.get(stateIndex));
+                        }else if(dogIndex == 1){
+                            imageView2.setImageResource(images.get(stateIndex));
+                        }
+                    }});
+
+                try{
+                    int sleepTime = getRandomTime(500, 3000);
+                    Thread.sleep(sleepTime);
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+
+                // when stateIndex value is out of bound, then set value to 0
+                stateIndex++;
+                if(stateIndex >= images.size()){
+                    stateIndex = 0;
+                }
             }
-            return null;
         }
 
-        // set Text view to number that every 500 milli seconds
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            txt += values[0].intValue() + " ";
-            textView1.setText(txt);
-            result *= values[0].intValue();
-            super.onProgressUpdate(values);
+        // get a random time between min and max time
+        public int getRandomTime(int min, int max){
+            return min+(int)(Math.random() * (max-min));
         }
 
-        // show result of factorial task and set result to default value
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            String r = Integer.toString(result);
-            textView2.setText(r);
-            result = 1;
-        }
     }
-
 }
 
