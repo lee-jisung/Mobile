@@ -1,119 +1,113 @@
 package com.leejisung.lab6;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listView;
-    EditText ID;
-    EditText name;
-    Button updateBtn;
-    Button deleteBtn;
-    String studentId, studentName;
-    String[] studentInfo;
+    private static final String NOTES = "mysdfile.txt";
+    EditText editText;
+    Button writeBtn;
+    Button clrBtn;
+    Button readBtn;
+    Button finishBtn;
 
-    SQLiteDatabase db;
-    DBHelper helper;
-
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        name = findViewById(R.id.name);
-        ID = findViewById(R.id.studentId);
-        updateBtn = findViewById(R.id.update);
-        deleteBtn = findViewById(R.id.delete);
-        listView = findViewById(R.id.listView);
+        editText = findViewById(R.id.txtData);
+        writeBtn = findViewById(R.id.wrtSD);
+        clrBtn = findViewById(R.id.clr);
+        readBtn = findViewById(R.id.readSD);
+        finishBtn = findViewById(R.id.finishApp);
 
-        // make student database
-        helper = new DBHelper(MainActivity.this, "student.db", null, 1);
-
-        // when "추가" button is clicked, first check whether name and number is not empty
-        // if one of them is empty, then print error message
-        // and the other get a string from Edit Text and store in database
-        // and call invalidate function to update list view.
-        updateBtn.setOnClickListener(new View.OnClickListener() {
+        writeBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(ID.getText().toString().length() == 0 || name.getText().toString().length() == 0) {
-                    Toast.makeText(getApplicationContext(), "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }else{
-                    studentName = name.getText().toString();
-                    studentId = ID.getText().toString();
-                    insert(studentName, studentId);
-                    invalidate();
+                try {
+                    File sdCard = Environment.getExternalStorageDirectory();
+
+                    File directory = new File(sdCard.getAbsolutePath() + "/MyFiles");
+                    directory.mkdirs();
+                    File file = new File(directory, NOTES);
+                    FileOutputStream fOut = new FileOutputStream(file);
+                    OutputStreamWriter osw = new OutputStreamWriter(fOut);
+
+                    osw.write(editText.getText().toString());
+                    osw.close();
+
+                }catch(IOException e){ e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), " fuctionasdf ", Toast.LENGTH_SHORT).show();
                 }
+
+                Toast.makeText(getApplicationContext(), "Done writing SD 'mysdfile.txt' ", Toast.LENGTH_SHORT).show();
+
             }
         });
 
-        // when "삭제" button is clicked, first check whether name is not empty
-        // if name is not entered, then print error message
-        // and the other get name and delete from database
-        // and call invalidate function to update list view
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
+        clrBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(name.getText().toString().length() == 0) {
-                    Toast.makeText(getApplicationContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }else{
-                    studentName = name.getText().toString();
-                    delete(studentName);
-                    invalidate();
-                }
+                editText.setText(null);
+//                editText.setHint("Enter some lines of data here...");
+                Toast.makeText(getApplicationContext(), "Clear Edit Text! ", Toast.LENGTH_SHORT).show();
             }
         });
-    }
 
-    // insert data to database
-    public void insert(String name, String studentNo) {
-        db = helper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("name", name);
-        values.put("studentNo", studentNo);
-        db.insert("student", null, values);
-        Log.i("insert", "성공");
-    }
+        readBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    File sdCard = Environment.getExternalStorageDirectory();
 
-    // delete data from database
-    public void delete(String name) {
-        db = helper.getWritableDatabase();
-        db.delete("student", "name=?", new String[]{name});
-        Log.i("delete", "성공");
+                    File directory = new File(sdCard.getAbsolutePath() + "/MyFiles");
+                    directory.mkdirs();
+                    File file = new File(directory, NOTES);
+                    FileInputStream fIn = new FileInputStream(file);
+                    InputStreamReader isr = new InputStreamReader(fIn);
+                    BufferedReader reader = new BufferedReader(isr);
 
-    }
+                    String str="";
 
-    // search data from database.
-    public void select(){
-        db = helper.getReadableDatabase();
-        Cursor c = db.query("student", null, null,null,null,null,null);
+                    str = reader.readLine();
 
-        studentInfo = new String[c.getCount()];
-        int count = 0;
-        while(c.moveToNext()){
-            studentInfo[count] = c.getString(c.getColumnIndex("name")) + " " + c.getString(c.getColumnIndex("studentNo"));
-            count++;
-        }
-        c.close();
-    }
+                    editText.setText(str.toString());
+                    isr.close();
+                    reader.close();
 
-    // update list view with student information
-    public void invalidate(){
-        select();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, studentInfo);
-        listView.setAdapter(adapter);
+                }catch(IOException e){ e.printStackTrace();}
+
+                Toast.makeText(getApplicationContext(), "Done Reading SD 'mysdfile.txt' ", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        finishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Finish this app!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
+
     }
 }
