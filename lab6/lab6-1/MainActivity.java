@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         readBtn = findViewById(R.id.readSD);
         finishBtn = findViewById(R.id.finishApp);
 
+        // when write button is clicked, get a data from edit text
+        // and data is stored in sd card storage.
         writeBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -54,24 +56,24 @@ public class MainActivity extends AppCompatActivity {
                     osw.write(editText.getText().toString());
                     osw.close();
 
-                }catch(IOException e){ e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), " fuctionasdf ", Toast.LENGTH_SHORT).show();
-                }
+                }catch(IOException e){ e.printStackTrace();}
 
                 Toast.makeText(getApplicationContext(), "Done writing SD 'mysdfile.txt' ", Toast.LENGTH_SHORT).show();
 
             }
         });
 
+        // when clear button is clicked, then erase text from edit text
         clrBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 editText.setText(null);
-//                editText.setHint("Enter some lines of data here...");
                 Toast.makeText(getApplicationContext(), "Clear Edit Text! ", Toast.LENGTH_SHORT).show();
             }
         });
 
+        // when read button is clicked, then read data from sd card
+        // and data is set to the edit text.
         readBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // when finish button is clicked, then terminate app 
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
