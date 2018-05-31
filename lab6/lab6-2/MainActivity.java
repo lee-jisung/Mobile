@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // when "저장" button is clicked, then get string from edit text
+        // when "저장하기" button is clicked, then get string from edit text
         // and call sharedPreferences() function
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
